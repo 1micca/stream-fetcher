@@ -21,11 +21,17 @@ The server will start at:
 ### GET `/`
 Health check route.
 
-### GET `/movie/<mood>`
+### GET `/movie`
 Returns a list of movies based on a mood.
 
+Example:
+
+```http
+GET /movie?mood=curiosity
+```
+
 ### GET `/genres`
-Returns the list of movie genres from TMDB.
+Returns the json list of movie genres from TMDB.
 
 ---
 

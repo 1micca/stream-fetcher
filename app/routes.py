@@ -1,20 +1,22 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, render_template, request
 import random
 import requests
 
 from .config import Config
 
 
-main = Blueprint('main', __name__)
+main_bp = Blueprint('main', __name__)
 
 
-@main.route('/')
+@main_bp.route('/')
 def index():
-    return 'Hello, World!'
+    MOVIE_MOODS_LIST = list(Config.MOVIE_MOODS.keys())
+    return render_template('index.html', MOVIE_MOODS_LIST=MOVIE_MOODS_LIST)
 
 
-@main.route('/movie/<mood>')
-def movie(mood): 
+@main_bp.route('/movie')
+def movie():
+    mood = request.args.get('mood')
     genres = Config.MOVIE_MOODS.get(str(mood).lower())
     
     if genres is None:
@@ -33,14 +35,14 @@ def movie(mood):
     }
     response = requests.get(url, headers=headers, params=params)
     data = response.json()
-    movies = data.get('results', [])
-    random.shuffle(movies)
+    movies_list = data.get('results', [])
+    random.shuffle(movies_list)
+    movies = movies_list[:Config.TMDB_RESULTS_LIMIT]
 
-    return jsonify(movies[:Config.TMDB_RESULTS_LIMIT])
+    return render_template('movies.html', movies=movies)
 
-
-@main.route('/genres')
-def list_genres():
+@main_bp.route('/genres')
+def genres():
     url = f'{Config.TMDB_BASE_URL}/genre/movie/list'
     headers = {
         'Authorization': f'Bearer {Config.TMDB_API_TOKEN}',

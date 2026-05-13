@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}app{% endblock title %} | streamF </title>
+</head>
+<body>
+  <header>
+  {% block navbar %}
+    <nav>
+      <a href="{{ url_for('main.index') }}">home</a>
+      <a href="{{ url_for('main.genres') }}">genres</a>
+    </nav>
+  {% endblock navbar %}
+  </header>
+  <main>
+    {% block content %}{% endblock content %}
+  </main>
+  <footer>@micca</footer>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}home{% endblock title %}
+
+{% block content %}
+  <h1>streamF</h1>
+  <form method="GET" action="/movie">
+    <select name="mood" required>
+      <option value="" disabled selected>Select a mood</option>
+      {% for mood in  MOVIE_MOODS_LIST %}
+        <option value="{{ mood }}">{{ mood }}</option>
+      {% endfor %}
+    </select>
+    <button type="submit">search</button>
+  </form>
+{% endblock content %}
